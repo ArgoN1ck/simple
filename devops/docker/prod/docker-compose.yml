@@ -1,0 +1,77 @@
+version: '3'
+
+networks:
+  simple-network:
+    name: simple-network
+    ipam:
+      config:
+        - subnet: '172.10.0.0/16'
+
+volumes:
+  simple-postgres-volume:
+    external: true
+  simple-redis-volume:
+    external: true
+
+services:
+  simple-postgres:
+    image: postgres:13.3
+    container_name: simple-postgres
+    environment:
+      - POSTGRES_USER=${PSQL_USERNAME}
+      - POSTGRES_PASSWORD=${PSQL_PASSWORD}
+      - POSTGRES_DB=${PSQL_DATABASE}
+    ports:
+      - '5432:5432'
+    volumes:
+      - simple-postgres-volume:/var/lib/postgresql/data
+    networks:
+      - simple-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${PSQL_USERNAME}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    tty: true
+
+  simple-redis:
+    image: redis
+    container_name: simple-redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - simple-redis-volume:/var/lib/redis/data
+    networks:
+      - simple-network
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli ping | grep PONG']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    tty: true
+
+  simple-server:
+    image: ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/${SERVER_IMAGE}
+    user: ${CURRENT_UID}
+    container_name: simple-server
+    environment:
+      - NODE_ENV=production
+      - HOST=${HOST}
+      - PORT=${PORT}
+      - PSQL_HOST=${PSQL_HOST}
+      - PSQL_PORT=${PSQL_PORT}
+      - PSQL_USERNAME=${PSQL_USERNAME}
+      - PSQL_PASSWORD=${PSQL_PASSWORD}
+      - PSQL_DATABASE=${PSQL_DATABASE}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+    ports:
+      - 3333:${PORT}
+    networks:
+      - simple-network
+    tty: true
+    depends_on:
+      simple-postgres:
+        condition: service_healthy
+      simple-redis:
+        condition: service_healthy

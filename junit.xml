@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="7" failures="0" errors="0" time="2.076">
+  <testsuite name="Article" errors="0" failures="0" skipped="0" timestamp="2024-07-02T06:24:09" time="1.373" tests="5">
+    <testcase classname="Article /api/articles/ POST" name="Article /api/articles/ POST" time="0.051">
+    </testcase>
+    <testcase classname="Article /api/articles/ /{id}" name="Article /api/articles/ /{id}" time="0.032">
+    </testcase>
+    <testcase classname="Article /api/articles/ GET" name="Article /api/articles/ GET" time="0.057">
+    </testcase>
+    <testcase classname="Article /api/articles/ PUT" name="Article /api/articles/ PUT" time="0.025">
+    </testcase>
+    <testcase classname="Article /api/articles/ DELETE" name="Article /api/articles/ DELETE" time="0.043">
+    </testcase>
+  </testsuite>
+  <testsuite name="Auth" errors="0" failures="0" skipped="0" timestamp="2024-07-02T06:24:10" time="0.661" tests="2">
+    <testcase classname="Auth /api/auth/ /sign-up" name="Auth /api/auth/ /sign-up" time="0.016">
+    </testcase>
+    <testcase classname="Auth /api/auth/ /sign-in" name="Auth /api/auth/ /sign-in" time="0.018">
+    </testcase>
+  </testsuite>
+</testsuites>

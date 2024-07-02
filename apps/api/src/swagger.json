@@ -1,0 +1,725 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/Auth/sign-in": {
+      "post": {
+        "operationId": "signIn",
+        "summary": "Sign in",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SignInDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ResponseDto" },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/SignInResponseData"
+                        },
+                        "status": {
+                          "$ref": "#/components/schemas/HttpStatus",
+                          "default": 201
+                        }
+                      }
+                    }
+                  ],
+                  "title": "SignInResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Auth"]
+      }
+    },
+    "/api/Auth/sign-up": {
+      "post": {
+        "operationId": "signUp",
+        "summary": "Sign up",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SignUpDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ResponseDto" },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/SignUpResponseData"
+                        },
+                        "status": {
+                          "$ref": "#/components/schemas/HttpStatus",
+                          "default": 201
+                        }
+                      }
+                    }
+                  ],
+                  "title": "SignUpResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Auth"]
+      }
+    },
+    "/api/articles": {
+      "post": {
+        "operationId": "ArticleController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateArticleDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ResponseDto" },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/CreateArticleResponseData"
+                        },
+                        "status": {
+                          "$ref": "#/components/schemas/HttpStatus",
+                          "default": 201
+                        }
+                      }
+                    }
+                  ],
+                  "title": "CreateArticleResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Articles"],
+        "security": [{ "bearer": [] }]
+      },
+      "get": {
+        "operationId": "ArticleController_listArticles",
+        "parameters": [
+          {
+            "name": "curPage",
+            "required": false,
+            "in": "query",
+            "description": "Current page",
+            "schema": { "default": 1, "type": "number" }
+          },
+          {
+            "name": "perPage",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": { "default": 10, "type": "number" }
+          },
+          {
+            "name": "author",
+            "required": false,
+            "in": "query",
+            "example": "ArgoNick",
+            "description": "Article author username",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "publicationDate",
+            "required": false,
+            "in": "query",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article publication date",
+            "schema": { "format": "date-time", "type": "string" }
+          },
+          {
+            "name": "orderBy",
+            "required": false,
+            "in": "query",
+            "description": "Field to order by",
+            "schema": { "enum": ["publicationDate", "title"], "type": "string" }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "Order direction",
+            "schema": { "$ref": "#/components/schemas/OrderEnum" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/PaginatedResponseDto" },
+                    {
+                      "properties": {
+                        "data": {
+                          "items": {
+                            "$ref": "#/components/schemas/ListArticlesResponseData"
+                          },
+                          "type": "array"
+                        },
+                        "status": {
+                          "$ref": "#/components/schemas/HttpStatus",
+                          "default": 200
+                        }
+                      }
+                    }
+                  ],
+                  "title": "ListArticlesResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Articles"],
+        "security": [{ "bearer": [] }]
+      }
+    },
+    "/api/articles/{id}": {
+      "get": {
+        "operationId": "ArticleController_getArticleById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ResponseDto" },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/GetArticleResponseData"
+                        },
+                        "status": {
+                          "$ref": "#/components/schemas/HttpStatus",
+                          "default": 200
+                        }
+                      }
+                    }
+                  ],
+                  "title": "GetArticleResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Articles"],
+        "security": [{ "bearer": [] }]
+      },
+      "put": {
+        "operationId": "ArticleController_updateArticle",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateArticleDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ResponseDto" },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/UpdateArticleResponseData"
+                        },
+                        "status": {
+                          "$ref": "#/components/schemas/HttpStatus",
+                          "default": 200
+                        }
+                      }
+                    }
+                  ],
+                  "title": "UpdateArticleResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Articles"],
+        "security": [{ "bearer": [] }]
+      },
+      "delete": {
+        "operationId": "ArticleController_deleteArticle",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ResponseDto" },
+                    {
+                      "properties": {
+                        "data": { "nullable": true, "default": null },
+                        "error": { "default": null },
+                        "status": { "default": 200 }
+                      }
+                    }
+                  ],
+                  "title": "DeleteArticleResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Articles"],
+        "security": [{ "bearer": [] }]
+      }
+    }
+  },
+  "info": { "title": "Simple API", "version": "0.0.0", "contact": {} },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": { "scheme": "bearer", "bearerFormat": "JWT", "type": "http" }
+    },
+    "schemas": {
+      "SignInResponseData": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "Access token",
+            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          },
+          "expiresIn": {
+            "type": "number",
+            "example": "3600",
+            "description": "Token expiration seconds"
+          }
+        },
+        "required": ["accessToken", "expiresIn"]
+      },
+      "ResponseError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "oneOf": [
+              { "type": "string", "default": "ERROR_CODE" },
+              { "type": "number" }
+            ]
+          },
+          "message": { "type": "string", "default": "Error message" },
+          "error": {
+            "oneOf": [
+              { "type": "string", "default": "Error reason" },
+              { "type": "object" }
+            ]
+          }
+        },
+        "required": ["code", "message", "error"]
+      },
+      "HttpStatus": {
+        "type": "number",
+        "default": 200,
+        "enum": [
+          100, 101, 102, 103, 200, 201, 202, 203, 204, 205, 206, 300, 301, 302,
+          303, 304, 307, 308, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409,
+          410, 411, 412, 413, 414, 415, 416, 417, 418, 421, 422, 424, 428, 429,
+          500, 501, 502, 503, 504, 505
+        ]
+      },
+      "ResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": { "type": "object", "nullable": true },
+          "error": {
+            "nullable": true,
+            "default": null,
+            "allOf": [{ "$ref": "#/components/schemas/ResponseError" }]
+          },
+          "status": { "$ref": "#/components/schemas/HttpStatus" }
+        },
+        "required": ["data", "error", "status"]
+      },
+      "SignInDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "argonick@gmail.com",
+            "description": "User email"
+          },
+          "password": {
+            "type": "string",
+            "example": "strong_secret",
+            "description": "User password"
+          }
+        },
+        "required": ["email", "password"]
+      },
+      "SignUpResponseData": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "Access token",
+            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          },
+          "expiresIn": {
+            "type": "number",
+            "example": "3600",
+            "description": "Token expiration seconds"
+          }
+        },
+        "required": ["accessToken", "expiresIn"]
+      },
+      "SignUpDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "ArgoNick",
+            "description": "User name"
+          },
+          "email": {
+            "type": "string",
+            "example": "argonick@gmail.com",
+            "description": "User email"
+          },
+          "password": {
+            "type": "string",
+            "example": "strong_secret",
+            "description": "User password"
+          }
+        },
+        "required": ["username", "email", "password"]
+      },
+      "CreateArticleResponseData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Article id",
+            "default": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          },
+          "title": {
+            "type": "string",
+            "example": "Simple news",
+            "description": "Article title"
+          },
+          "description": {
+            "type": "string",
+            "example": "<h1>SIMPLE NEWS</h1>",
+            "description": "Article description"
+          },
+          "authorId": {
+            "type": "string",
+            "example": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "description": "Article author id"
+          },
+          "publicationDate": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article publication date"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article created date"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article updated date"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "authorId",
+          "publicationDate",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateArticleDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Simple news",
+            "description": "Article title"
+          },
+          "description": {
+            "type": "string",
+            "example": "<h1>SIMPLE NEWS</h1>",
+            "description": "Article description"
+          }
+        },
+        "required": ["title", "description"]
+      },
+      "GetArticleResponseData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Article id",
+            "default": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          },
+          "title": {
+            "type": "string",
+            "example": "Simple news",
+            "description": "Article title"
+          },
+          "description": {
+            "type": "string",
+            "example": "<h1>SIMPLE NEWS</h1>",
+            "description": "Article description"
+          },
+          "authorId": {
+            "type": "string",
+            "example": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "description": "Article author id"
+          },
+          "publicationDate": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article publication date"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article created date"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article updated date"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "authorId",
+          "publicationDate",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "ListArticlesResponseData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Article id",
+            "default": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          },
+          "title": {
+            "type": "string",
+            "example": "Simple news",
+            "description": "Article title"
+          },
+          "description": {
+            "type": "string",
+            "example": "<h1>SIMPLE NEWS</h1>",
+            "description": "Article description"
+          },
+          "authorId": {
+            "type": "string",
+            "example": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "description": "Article author id"
+          },
+          "publicationDate": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article publication date"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article created date"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article updated date"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "authorId",
+          "publicationDate",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "PaginatedResponseMeta": {
+        "type": "object",
+        "properties": {
+          "curPage": { "type": "number" },
+          "perPage": { "type": "number" },
+          "total": { "type": "number" }
+        },
+        "required": ["curPage", "perPage", "total"]
+      },
+      "PaginatedResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "nullable": true,
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "meta": {
+            "nullable": true,
+            "allOf": [{ "$ref": "#/components/schemas/PaginatedResponseMeta" }]
+          },
+          "status": { "$ref": "#/components/schemas/HttpStatus" },
+          "error": {
+            "nullable": true,
+            "default": null,
+            "allOf": [{ "$ref": "#/components/schemas/ResponseError" }]
+          }
+        },
+        "required": ["data", "meta", "status", "error"]
+      },
+      "OrderEnum": { "type": "string", "enum": ["ASC", "DESC"] },
+      "UpdateArticleResponseData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Article id",
+            "default": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          },
+          "title": {
+            "type": "string",
+            "example": "Simple news",
+            "description": "Article title"
+          },
+          "description": {
+            "type": "string",
+            "example": "<h1>SIMPLE NEWS</h1>",
+            "description": "Article description"
+          },
+          "authorId": {
+            "type": "string",
+            "example": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "description": "Article author id"
+          },
+          "publicationDate": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article publication date"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article created date"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-03-29 10:21:02.810132",
+            "description": "Article updated date"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "authorId",
+          "publicationDate",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateArticleDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Simple news",
+            "description": "Article title"
+          },
+          "description": {
+            "type": "string",
+            "example": "<h1>SIMPLE NEWS</h1>",
+            "description": "Article description"
+          }
+        }
+      }
+    }
+  }
+}
