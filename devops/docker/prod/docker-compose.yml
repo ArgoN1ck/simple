@@ -65,6 +65,10 @@ services:
       - PSQL_DATABASE=${PSQL_DATABASE}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER_URL=${JWT_ISSUER_URL}
+      - JWT_AUDIENCE_URL=${JWT_AUDIENCE_URL}
+      - JWT_ACCESS_TOKEN_TTL=${JWT_ACCESS_TOKEN_TTL}
     ports:
       - 3333:${PORT}
     networks:
